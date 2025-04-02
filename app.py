@@ -28,7 +28,7 @@ disease_to_doctor = {
     "Reproductive Health Issues (Male)": "Andrologist/Urologist",
     "Urinary Tract Issues": "Urologist",
     "Cancer (Various Types)": "Oncologist",
-    "Blood Disorders (Anemia, Leukemia, etc.)": "Hematologist",
+    "Blood Disorders (Anemia, Leukemia, etc.)": "Hematologist",  
     "Autoimmune Diseases": "Rheumatologist",
     "Allergic Conditions": "Allergist/Immunologist",
     "Infectious Diseases (HIV, Tuberculosis, etc.)": "Infectious Disease Specialist",
