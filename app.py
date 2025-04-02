@@ -6,9 +6,11 @@ import pytesseract
 import cv2
 from PIL import Image
 import joblib
+import pyttsx3
+import threading  # Import threading for asynchronous execution
 
 # Load trained ML model
-model = joblib.load("model.pkl")  # Make sure you have a trained model
+model = joblib.load("model.pkl")  # Ensure you have a trained model
 
 # Disease to doctor mapping
 disease_to_doctor = {
@@ -112,7 +114,6 @@ disease_to_doctor = {
 }
 
 
-
 # Function to extract text from a PDF
 def extract_text_from_pdf(file):
     with pdfplumber.open(file) as pdf:
@@ -128,7 +129,6 @@ def extract_text_from_image(image):
 
 # Prediction function
 def predict_disease(report_text):
-    # Simple mock logic (Replace with actual ML model)
     if "glucose" in report_text.lower():
         return "Diabetes"
     elif "chest pain" in report_text.lower():
@@ -137,6 +137,16 @@ def predict_disease(report_text):
         return "Lung Disease"
     else:
         return "Unknown Disease"
+
+# Function to generate voice output asynchronously
+def speak(text):
+    def run_speech():
+        engine = pyttsx3.init()
+        engine.say(text)
+        engine.runAndWait()
+        engine.stop()
+    
+    threading.Thread(target=run_speech, daemon=True).start()
 
 # Streamlit UI
 st.title("Medical Diagnosis Prediction System")
@@ -164,3 +174,8 @@ if uploaded_file is not None:
     # Suggest a doctor
     doctor = disease_to_doctor.get(predicted_disease, "General Physician")
     st.subheader(f"Suggested Doctor: {doctor}")
+
+    # Generate voice output
+    result_text = f"The predicted disease is {predicted_disease}. You should consult a {doctor}."
+    speak(result_text)
+    st.write("🔊 **Voice Output Generated**")
